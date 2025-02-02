@@ -65,5 +65,6 @@ body {
     height: 100%;
     width: 100%;
 
-    border: 1px solid red;
+    /* need for drawing border as dash */
+    stroke-dasharray: 50;
 }
