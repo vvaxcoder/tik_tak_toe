@@ -66,5 +66,15 @@ body {
     width: 100%;
 
     /* need for drawing border as dash */
-    stroke-dasharray: 50;
+    stroke-dasharray: 283;
+
+    /* need for offset border dashes */
+    stroke-dashoffset: 283;
+    animation: drawCircle 1s forwards;
+}
+
+@keyframes drawCircle {
+    100% {
+        stroke-dashoffset: 0;
+    }
 }
