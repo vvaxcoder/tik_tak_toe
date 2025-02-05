@@ -10,6 +10,7 @@ let game = document.querySelector(".game");
 let result = document.querySelector(".result");
 let btnGame = document.querySelector(".new-game");
 let fields = document.querySelectorAll(".field");
+const filledCells = new Map();
 
 let step = false;
 let circle = `
@@ -27,16 +28,56 @@ let cross = `
             </svg>
             `;
 
-function init(e) {    
-    if (!step) {
-        stepCross(e?.target);
+function init(e) {
+    const clazz = e?.target?.classList[1];
+
+    if (!clazz) return;
+
+    if (filledCells.size === 0) {
+        const pseudo = Math.floor(Math.random(2) + 0.5);
+
+        if (pseudo === 0) {
+            stepZero(e?.target);
+            filledCells.set(clazz, "o");
+        }
+        else {
+            stepCross(e?.target);
+            filledCells.set(clazz, "x");
+        }
+
+        step = !step;
     }
     else {
-        stepZero(e?.target);
-    }
+        if (filledCells.has(clazz)) return;
 
-    step = !step;
-    win();
+        if (filledCells.size === 1) {
+            const firstValue = Array.from(filledCells)[0][1];
+
+            if (firstValue === "x") {
+                stepZero(e?.target);
+                filledCells.set(clazz, "o");
+            }
+            else {
+                stepCross(e?.target);
+                filledCells.set(clazz, "x");
+            }
+
+            step = !step;
+        }
+        else {
+            if (!step) {
+                stepCross(e?.target);
+                filledCells.set(clazz, "x");
+            }
+            else {
+                stepZero(e?.target);
+                filledCells.set(clazz, "o");
+            }
+        
+            step = !step;
+            win();
+        }
+    }
 }
 
 function stepCross(data) {
